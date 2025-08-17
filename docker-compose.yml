@@ -46,26 +46,6 @@ services:
     networks:
       - app_net
 
-  # order-consumer:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: order_consumer
-  #   environment:
-  #     - DB_USER=order_user
-  #     - DB_PASSWORD=order_pass
-  #     - DB_NAME=order
-  #     - DB_HOST=db
-  #     - DB_PORT=5432
-  #     - KAFKA_BROKER=kafka:9092
-  #     - KAFKA_TOPIC=orders
-  #     - KAFKA_GROUP_ID=order-consumer
-  #   depends_on:
-  #     - kafka
-  #     - db
-  #   networks:
-  #     - app_net
-
 networks:
   app_net:
     driver: bridge

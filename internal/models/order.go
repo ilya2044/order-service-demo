@@ -16,7 +16,7 @@ type Order struct {
 	ShardKey          string    `json:"shard_key" db:"shard_key"`
 	SmID              int       `json:"sm_id" db:"sm_id"`
 	DateCreated       time.Time `json:"date_created" db:"date_created"`
-	OofShard          int       `json:"oof_shard" db:"oof_shard"`
+	OofShard          string    `json:"oof_shard" db:"oof_shard"`
 }
 
 type Delivery struct {
