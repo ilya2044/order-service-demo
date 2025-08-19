@@ -2,16 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
+	"github.com/ilya2044/order-service-demo/internal/api"
+	"github.com/ilya2044/order-service-demo/internal/cache"
 	"github.com/ilya2044/order-service-demo/internal/db"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Не удалось загрузить .env файл")
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Не удалось загрузить .env файл")
 	}
 
 	dsn := fmt.Sprintf(
@@ -24,5 +27,22 @@ func main() {
 	)
 
 	dbConn := db.InitDB(dsn)
-	fmt.Println("БД подключена:", dbConn != nil)
+
+	c := cache.NewCache()
+
+	if err := c.LoadFromDB(dbConn); err != nil {
+		log.Fatal("Ошибка загрузки кэша:", err)
+	}
+
+	apiHandler := api.NewAPI(dbConn, c)
+
+	r := gin.Default()
+
+	r.GET("/order/:id", apiHandler.GetOrder)
+
+	r.StaticFile("/", "./web/index.html")
+
+	if err := r.Run(":8081"); err != nil {
+		log.Fatal(err)
+	}
 }

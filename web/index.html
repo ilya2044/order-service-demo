@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Order</title>
+</head>
+<body>
+  <h1>Поиск заказа</h1>
+  <input type="text" id="orderId" placeholder="Введите order_uid">
+  <button onclick="getOrder()">Найти</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function getOrder() {
+      const id = document.getElementById('orderId').value;
+      const resp = await fetch(`http://localhost:8081/order/${id}`);
+      const data = await resp.json();
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>

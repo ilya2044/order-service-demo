@@ -29,6 +29,13 @@ func main() {
 
 	h := handler.NewHandler(dbConn, cache)
 
+	var orders []models.Order
+	dbConn.Preload("Delivery").Preload("Payment").Preload("Items").Find(&orders)
+	for _, o := range orders {
+		cache[o.OrderUID] = o
+	}
+	log.Printf("Кэш восстановлен, %d заказов загружено", len(cache))
+
 	consumer, err := kafka.NewConsumer(
 		os.Getenv("KAFKA_GROUP_ID"),
 		os.Getenv("KAFKA_TOPIC"),
