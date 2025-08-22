@@ -14,34 +14,33 @@ type Cache struct {
 }
 
 func NewCache() *Cache {
-	return &Cache{
-		orders: make(map[string]models.Order),
-	}
+	return &Cache{orders: make(map[string]models.Order)}
 }
 
 func (c *Cache) Set(order models.Order) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	c.orders[order.OrderUID] = order
+	c.mu.Unlock()
 }
 
 func (c *Cache) Get(id string) (models.Order, bool) {
 	c.mu.RLock()
-	defer c.mu.RUnlock()
-	order, ok := c.orders[id]
-	return order, ok
+	o, ok := c.orders[id]
+	c.mu.RUnlock()
+	return o, ok
 }
 
 func (c *Cache) LoadFromDB(db *gorm.DB) error {
 	var orders []models.Order
-	if err := db.Preload("Delivery").Preload("Payment").Preload("Items").
-		Find(&orders).Error; err != nil {
+	if err := db.Preload("Delivery").Preload("Payment").Preload("Items").Find(&orders).Error; err != nil {
 		return err
 	}
-
+	c.mu.Lock()
 	for _, o := range orders {
-		c.Set(o)
+		c.orders[o.OrderUID] = o
 	}
-	log.Printf("Кэш восстановлен из бд (%d заказов)", len(orders))
+	n := len(c.orders)
+	c.mu.Unlock()
+	log.Printf("Кэш восстановлен из БД (%d заказов)", n)
 	return nil
 }

@@ -34,6 +34,5 @@ func (a *API) GetOrder(c *gin.Context) {
 	}
 
 	a.cache.Set(order)
-
 	c.JSON(http.StatusOK, order)
 }

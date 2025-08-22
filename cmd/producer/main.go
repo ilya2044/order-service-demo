@@ -20,7 +20,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10; i++ {
 		orderUID := uuid.New().String()
 
 		msg := fmt.Sprintf(`
@@ -75,9 +75,9 @@ func main() {
 }
 `, orderUID, orderUID)
 
-		// if i == 0 {
-		// 	msg = "test invalid message"
-		// }
+		if i == 0 {
+			msg = "test invalid message"
+		}
 
 		if err := p.Produce(msg, topic); err != nil {
 			log.Print(err)

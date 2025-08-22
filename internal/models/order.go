@@ -21,7 +21,7 @@ type Order struct {
 
 type Delivery struct {
 	ID       int    `db:"id" gorm:"primaryKey"`
-	OrderUID string `db:"order_uid" gorm:"index"`
+	OrderUID string `db:"order_uid" gorm:"uniqueIndex"`
 	Name     string `json:"name" db:"name"`
 	Phone    string `json:"phone" db:"phone"`
 	Zip      string `json:"zip" db:"zip"`
@@ -33,7 +33,7 @@ type Delivery struct {
 
 type Payment struct {
 	ID           int    `db:"id" gorm:"primaryKey"`
-	OrderUID     string `db:"order_uid" gorm:"index"`
+	OrderUID     string `db:"order_uid" gorm:"uniqueIndex"`
 	Transaction  string `json:"transaction" db:"transaction"`
 	RequestID    string `json:"request_id" db:"request_id"`
 	Currency     string `json:"currency" db:"currency"`
@@ -48,7 +48,7 @@ type Payment struct {
 
 type Item struct {
 	ID          int    `db:"id" gorm:"primaryKey"`
-	OrderUID    string `db:"order_uid" gorm:"index"`
+	OrderUID    string `db:"order_uid" gorm:"uniqueIndex"`
 	ChrtID      int    `json:"chrt_id" db:"chrt_id"`
 	TrackNumber string `json:"track_number" db:"track_number"`
 	Price       int    `json:"price" db:"price"`
