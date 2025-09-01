@@ -1,34 +1,46 @@
-Order Service with Kafka and PostgreSQL
+# Order Service with Kafka and PostgreSQL
 
 Демонстрационной сервис заказов, реализованный на Go
-Использует:
+
+## Использует:
 - PostgreSQL для хранения данных,
 - Kafka для асинхронной обработки заказов,
 - Docker Compose для запуска инфраструктуры.
 
-Сервис включает:
+## Сервис включает:
 - Producer — создает заказы и публикует их в Kafka,
 - Consumer — обрабатывает сообщения из Kafka и обновляет базу данных,
 - API для взаимодействия с заказами.
 
-Установка и запуск
+## Установка и запуск
 
 1. Клонировать репозиторий
+```
 git clone https://github.com/ilya2044/order-service-demo.git
 cd order-service
+```
 2. Скачать зависимости
+```
 go mod download
+```
 3. Запустить инфраструктуру
+```
 docker-compose up -d
-4. Запустить сервисы
-Producer
+```
+7. Запустить сервисы
+```
+## Producer
 go run cmd/producer/main.go
-Consumer
+## Consumer
 go run cmd/consumer/main.go
-API
+## API
 go run cmd/order-service/main.go
-5. Перейти на http://localhost:8081 и выполнить GET запрос
-Структура проекта
+```
+9. Перейти на http://localhost:8081 и выполнить GET запрос
+
+## Структура проекта
+
+```
 .
 ├── cmd
 │   ├── order-service   # API сервис
@@ -49,8 +61,8 @@ go run cmd/order-service/main.go
 ├── docker-compose.yml
 ├── go.mod
 └── README.md
-
-Восстановление кеша при рестарте
+```
+## Восстановление кеша при рестарте
 Consumer при старте:
 - Загружает актуальные данные из PostgreSQL в кеш,
 - Продолжает обслуживание запросов без задержек.
