@@ -1,6 +1,7 @@
 # Order Service with Kafka and PostgreSQL
 
 Демонстрационной сервис заказов, реализованный на Go
+Демонстрация - https://drive.google.com/drive/folders/19Mc1TCTGjpQ0y2w5xBrCDaBG-1e7TZhX?usp=sharing
 
 ## Использует:
 - PostgreSQL для хранения данных,
